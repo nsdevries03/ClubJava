@@ -57,7 +57,7 @@ public class Main {
         ArrayList<ArrayList<Integer>> schedule = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
             ArrayList<Integer> times = new ArrayList<>();
-            for (int j = 0; j < 37; j++) {
+            for (int j = 0; j < 73; j++) {
                 times.add(0);
             }
             schedule.add(times);
@@ -67,7 +67,7 @@ public class Main {
 
     public static ArrayList<ArrayList<Integer>> addTimes(ArrayList<ArrayList<Integer>> schedule, ArrayList<Timeslot> timeslotData) {
         for (Timeslot ts : timeslotData) {
-            for (int i = getFirstVal(ts.hours1, ts.minutes1); i <= getLastVal(ts.hours2, ts.minutes2); i++) {
+            for (int i = getVal(ts.hours1, ts.minutes1); i <= getVal(ts.hours2, ts.minutes2); i++) {
                 switch (ts.day) {
                     case 'M' -> {
                         int temp = schedule.get(1).get(i);
@@ -96,18 +96,9 @@ public class Main {
         return schedule;
     }
 
-    public static int getFirstVal(int hours, int minutes) {
-        int result = 0;
-        result = (hours - 6) * 2;
-        result += minutes / 30;
+    public static int getVal(int hours, int minutes) {
+        int result = (hours - 6) * 4;
+        result += minutes / 15;
         return result;
-    }
-
-    public static int getLastVal(int hours, int minutes) {
-        int result = 0;
-        result = (hours - 6) * 2;
-        result += minutes / 30;
-        if (minutes / 30 == 0) return result;
-        else return result + 1;
     }
 }

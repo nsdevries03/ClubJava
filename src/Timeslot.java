@@ -38,8 +38,16 @@ public class Timeslot {
         return true;
     }
 
-//    @Override
-//    public String toString() {
-//
-//    }
+    @Override
+    public String toString() {
+        String time = day + " ";
+
+        if (hours1 < 10) time = "0" + hours1;
+        else time = time + hours1;
+
+        if (minutes1 < 10) time = time + ":0" + minutes1;
+        else time = time + ":" + minutes1;
+
+        return time;
+    }
 }
