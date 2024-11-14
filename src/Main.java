@@ -52,7 +52,7 @@ public class Main {
         return timeslotData;
     }
 
-    // Create schedule [Sunday - Saturday][6:00 - 0:00] (broken up every 30 min)]
+    // Create schedule [Sunday - Saturday][6:00 - 0:00] (broken up every 15 min)]
     public static ArrayList<ArrayList<Integer>> createNewSchedule() {
         ArrayList<ArrayList<Integer>> schedule = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
@@ -65,6 +65,7 @@ public class Main {
         return schedule;
     }
 
+    // Add timeslots to schedule
     public static ArrayList<ArrayList<Integer>> addTimes(ArrayList<ArrayList<Integer>> schedule, ArrayList<Timeslot> timeslotData) {
         for (Timeslot ts : timeslotData) {
             for (int i = getVal(ts.hours1, ts.minutes1); i <= getVal(ts.hours2, ts.minutes2); i++) {

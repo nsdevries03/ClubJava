@@ -20,12 +20,12 @@ public class Timeslot {
         hours2 = Integer.parseInt(str.substring(8, 10));
         minutes2 = Integer.parseInt(str.substring(11, 13));
         if (str.substring(13).equals("PM")) {
-            hours1 += 12;
-            hours2 += 12;
+            if (hours1 != 12) hours1 += 12;
+            if (hours2 != 12) hours2 += 12;
         }
     }
 
-    public boolean isin(DateTime dt) {
+    public boolean isin(DateTime dt) { 
         if (dt.day != day) return false;
         if (dt.hours < hours1 || dt.hours > hours2) return false;
 
