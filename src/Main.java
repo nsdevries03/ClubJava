@@ -9,11 +9,17 @@ public class Main {
         ArrayList<String> fileData = getFileData(FILEPATH);
         ArrayList<Timeslot> timeslotData = toTimeslots(fileData);
         ArrayList<ArrayList<Integer>> schedule = createNewSchedule();
-        ArrayList<ArrayList<Integer>> newSchedule = addTimes(schedule, timeslotData);
+        schedule = addTimes(schedule, timeslotData);
 
-        for (ArrayList<Integer> a : newSchedule) {
-            System.out.println(a);
+        ArrayList<Timeslot> bestTimes = getBestTimes(schedule.get(1), 'M');
+
+        for (Timeslot ts : bestTimes) {
+            System.out.println(ts);
         }
+
+//        for (ArrayList<Integer> a : schedule) {
+//            System.out.println(a);
+//        }
     }
 
     // Gets schedule times from txt and loads into array
@@ -68,7 +74,7 @@ public class Main {
     // Add timeslots to schedule
     public static ArrayList<ArrayList<Integer>> addTimes(ArrayList<ArrayList<Integer>> schedule, ArrayList<Timeslot> timeslotData) {
         for (Timeslot ts : timeslotData) {
-            for (int i = getVal(ts.hours1, ts.minutes1); i <= getVal(ts.hours2, ts.minutes2); i++) {
+            for (int i = getIndex(ts.hours1, ts.minutes1); i <= getIndex(ts.hours2, ts.minutes2); i++) {
                 switch (ts.day) {
                     case 'M' -> {
                         int temp = schedule.get(1).get(i);
@@ -97,9 +103,79 @@ public class Main {
         return schedule;
     }
 
-    public static int getVal(int hours, int minutes) {
+    public static int getIndex(int hours, int minutes) {
         int result = (hours - 6) * 4;
         result += minutes / 15;
         return result;
+    }
+
+    public static ArrayList<Timeslot> getBestTimes(ArrayList<Integer> a, char day) {
+        ArrayList<Timeslot> bestTimeslots = new ArrayList<>();
+
+        if (a.size() < 4) {
+            return bestTimeslots;
+        } else if (a.size() == 4) {
+            bestTimeslots.add(new Timeslot(day + " 06:00-07:00"));
+            return bestTimeslots;
+        }
+
+        int window = a.get(0) + a.get(1) + a.get(2) + a.get(3);
+        int max = window;
+        for (int i = 1; i < a.size() - 3; i++) {
+            window -= a.get(i - 1);
+            window += a.get(i + 3);
+            if (window < max) {
+                max = window;
+            }
+        }
+
+        window = a.get(0) + a.get(1) + a.get(2) + a.get(3);
+        if (window == max) {
+            bestTimeslots.add(new Timeslot(day + " 06:00-07:00"));
+        }
+        for (int i = 1; i < a.size() - 3; i++) {
+            window -= a.get(i - 1);
+            window += a.get(i + 3);
+            if (window == max) {
+                bestTimeslots.add(new Timeslot(day + " " + getTime(i)));
+            }
+        }
+        return bestTimeslots;
+    }
+
+    public static String getTime(int index) {
+        String str = "";
+        int hours = index / 4 + 6;
+        int minutes;
+        switch (index % 4) {
+            case 1 -> minutes = 15;
+            case 2 -> minutes = 30;
+            case 3 -> minutes = 45;
+            default -> minutes = 0;
+        }
+        if (hours < 10) {
+            str += "0" + hours;
+        } else {
+            str += hours;
+        }
+        if (minutes < 10) {
+            str += ":0" + minutes;
+        } else {
+            str += ":" + minutes;
+        }
+        str += "-";
+
+        hours++;
+        if (hours < 10) {
+            str += "0" + hours;
+        } else {
+            str += hours;
+        }
+        if (minutes < 10) {
+            str += ":0" + minutes;
+        } else {
+            str += ":" + minutes;
+        }
+        return str;
     }
 }
