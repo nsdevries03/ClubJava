@@ -9,19 +9,25 @@ public class DateTime {
         this.day = day;
     }
 
+    public DateTime(String str) {
+        day = str.charAt(0);
+        hours = Integer.parseInt(str.substring(2, 4));
+        minutes = Integer.parseInt(str.substring(5, 7));
+    }
+
     @Override
     public String toString() {
         String time = day + " ";
         if (hours < 10) {
-            time = "0" + hours;
+            time += "0" + hours;
         } else {
-            time = time + hours;
+            time += hours;
         }
 
         if (minutes < 10) {
-            time = time + ":0" + minutes;
+            time += ":0" + minutes;
         } else {
-            time = time + ":" + minutes;
+            time += ":" + minutes;
         }
 
         return time;

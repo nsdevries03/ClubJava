@@ -19,9 +19,11 @@ public class Timeslot {
         minutes1 = Integer.parseInt(str.substring(5, 7));
         hours2 = Integer.parseInt(str.substring(8, 10));
         minutes2 = Integer.parseInt(str.substring(11, 13));
-        if (str.substring(13).equals("PM")) {
-            if (hours1 != 12) hours1 += 12;
-            if (hours2 != 12) hours2 += 12;
+        if (str.length() > 13) {
+            if (str.substring(13).equals("PM")) {
+                if (hours1 != 12) hours1 += 12;
+                if (hours2 != 12) hours2 += 12;
+            }
         }
     }
 
@@ -42,11 +44,29 @@ public class Timeslot {
     public String toString() {
         String time = day + " ";
 
-        if (hours1 < 10) time = "0" + hours1;
-        else time = time + hours1;
+        if (hours1 < 10) {
+            time += "0" + hours1;
+        } else {
+            time += hours1;
+        }
 
-        if (minutes1 < 10) time = time + ":0" + minutes1;
-        else time = time + ":" + minutes1;
+        if (minutes1 < 10) {
+            time += ":0" + minutes1;
+        } else {
+            time += ":" + minutes1;
+        }
+
+        if (hours2 < 10) {
+            time += "-0" + hours2;
+        } else {
+            time += "-" + hours2;
+        }
+
+        if (minutes2 < 10) {
+            time += ":0" + minutes2;
+        } else {
+            time += ":" + minutes2;
+        }
 
         return time;
     }

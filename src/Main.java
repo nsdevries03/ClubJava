@@ -120,26 +120,28 @@ public class Main {
         }
 
         int window = a.get(0) + a.get(1) + a.get(2) + a.get(3);
-        int max = window;
+        int min = window;
         for (int i = 1; i < a.size() - 3; i++) {
             window -= a.get(i - 1);
             window += a.get(i + 3);
-            if (window < max) {
-                max = window;
+            if (window < min) {
+                min = window;
             }
         }
 
         window = a.get(0) + a.get(1) + a.get(2) + a.get(3);
-        if (window == max) {
+        if (window == min) {
             bestTimeslots.add(new Timeslot(day + " 06:00-07:00"));
         }
         for (int i = 1; i < a.size() - 3; i++) {
             window -= a.get(i - 1);
             window += a.get(i + 3);
-            if (window == max) {
-                bestTimeslots.add(new Timeslot(day + " " + getTime(i)));
+            if (window == min) {
+                String temp = day + " " + getTime(i);
+                bestTimeslots.add(new Timeslot(temp));
             }
         }
+        bestTimeslots.remove(bestTimeslots.size() - 1);
         return bestTimeslots;
     }
 
