@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
@@ -9,17 +10,35 @@ public class Main {
         ArrayList<String> fileData = getFileData(FILEPATH);
         ArrayList<Timeslot> timeslotData = toTimeslots(fileData);
         ArrayList<ArrayList<Integer>> schedule = createNewSchedule();
-        schedule = addTimes(schedule, timeslotData);
+//        schedule = addTimes(schedule, timeslotData);
 
-        ArrayList<Timeslot> bestTimes = getBestTimes(schedule.get(1), 'M');
-
-        for (Timeslot ts : bestTimes) {
-            System.out.println(ts);
+        // Sample data
+        Random r = new Random();
+        for (ArrayList<Integer> array : schedule) {
+            array.replaceAll(ignored -> r.nextInt(50));
         }
 
-//        for (ArrayList<Integer> a : schedule) {
-//            System.out.println(a);
-//        }
+        Scanner s = new Scanner(System.in);
+        System.out.print("Day: ");
+        char c = s.next().charAt(0);
+        int index;
+        switch (c) {
+            case 'M' -> index = 1;
+            case 'T' -> index = 2;
+            case 'W' -> index = 3;
+            case 'R' -> index = 4;
+            case 'F' -> index = 5;
+            default -> index = 0;
+        }
+        ArrayList<Timeslot> bestTimes = getBestTimes(schedule.get(index), c);
+
+        System.out.println("\nBest times:");
+        System.out.println(bestTimes);
+        System.out.println();
+
+        for (ArrayList<Integer> a : schedule) {
+            System.out.println(a);
+        }
     }
 
     // Gets schedule times from txt and loads into array
@@ -109,6 +128,7 @@ public class Main {
         return result;
     }
 
+    // Iterate to find the lowest sum in window
     public static ArrayList<Timeslot> getBestTimes(ArrayList<Integer> a, char day) {
         ArrayList<Timeslot> bestTimeslots = new ArrayList<>();
 
@@ -141,7 +161,7 @@ public class Main {
                 bestTimeslots.add(new Timeslot(temp));
             }
         }
-        bestTimeslots.remove(bestTimeslots.size() - 1);
+//        bestTimeslots.remove(bestTimeslots.size() - 1);
         return bestTimeslots;
     }
 
